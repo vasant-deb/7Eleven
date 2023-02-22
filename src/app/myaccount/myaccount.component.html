@@ -1,0 +1,641 @@
+<app-header></app-header>
+
+<div class="container-fluid myaccount">
+    <div class="row task-manager">
+      <div class="col-md-12 col-sm-12"  *ngIf="newpro && getone">
+      <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{ getone?.productname }}</h5>
+              <button type="button"  (click)='close()' class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="table table-striped table-bordered">
+                <tr><th>Category Name</th><td>{{ getone?.categoryname }}</td><th>Stock</th><td>{{ getone?.stock }}</td><th>Price</th><td>{{ getone?.price }}</td></tr>
+                <tr><th>Calories</th><td>{{ getone?.calories }}</td><th>UPC</th><td>{{ getone?.upcImage }}</td></tr>
+                <tr><th>Image</th><td><img width="250px" src="{{serverUrl}}{{getone?.productimage }}"/></td></tr>
+                <tr><th>Location</th><td>{{ getone?.location }}</td></tr>
+                <tr><th>Description</th><td>{{ getone?.description }}</td></tr>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12"  *ngIf="addNote">
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Note</h5>
+                <button type="button" (click)='close()' class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form class="form-responsive" method="post" (ngSubmit)="onaddnoteSubmit()">
+              <div class="modal-body">
+                 
+                  <label [formGroup]="note" class="col-md-12">Title
+                  <input type="text" formControlName="title" class="form-control"/>
+                  </label>
+                  <label [formGroup]="note" class="col-md-12">Image
+                    <input type="file" formControlName="image" (change)="onFileSelected($event)" class="form-control"/>
+                    </label>
+                  <label [formGroup]="note" class="col-md-12">Description
+                      <textarea formControlName="description" class="form-control"></textarea>
+                  </label>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button"  (click)='close()' class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+          </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-md-12 col-sm-12"  *ngIf="editone && getone">
+      <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{ getone?.productname }}</h5>
+              <button type="button" (click)='close()' class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-responsive" method="post" (ngSubmit)="oneditSubmit()">
+            <div class="modal-body">
+                <label [formGroup]="form" class="col-md-12">
+                <input type="hidden" formControlName="productId" value="{{ getone?.product_id }}"/>
+              </label>
+                <label [formGroup]="form" class="col-md-12">Product Name
+                <input type="text" formControlName="productname" class="form-control" value="{{ getone?.productname }}"/>
+                </label>
+                <label [formGroup]="form" class="col-md-12">Location
+                    <input type="text" formControlName="location" class="form-control" value="{{ getone?.location }}"/>
+                </label>
+                <label [formGroup]="form" class="col-md-12">Stock
+                    <input type="text" formControlName="stock" class="form-control" value="{{ getone?.stock }}"/>
+                </label>
+                <label  [formGroup]="form" class="col-md-12">UPC
+                    <input type="text" formControlName="upcImage" class="form-control" value="{{ getone?.upcImage }}"/>
+                </label>
+                <label [formGroup]="form" class="col-md-12">Description
+                    <textarea formControlName="description" class="form-control">{{this.getone?.description}}</textarea>
+                </label>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button"  (click)='close()' class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2 col-sm-12">
+
+      <div class="left-bar">
+        <div class="upper-part">
+          <div class="actions">
+            <div class="circle"></div>
+          </div>
+        </div>
+        <div class="left-content">
+          <ul class="action-list">
+            <li class="item" (click)='profile()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-user"
+              viewBox="0 0 24 24">
+ <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+ <circle cx="12" cy="7" r="4" />
+ </svg>
+              <span>Profile</span>
+            </li>
+            <li class="item" (click)='tasks()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-star">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+              <span> Tasks</span>
+            </li>
+            <li class="item" (click)='notes()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-file-text"
+              viewBox="0 0 24 24">
+             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+             <polyline points="14 2 14 8 20 8"></polyline>
+             <line x1="16" y1="13" x2="8" y2="13"></line>
+             <line x1="16" y1="17" x2="8" y2="17"></line>
+             <polyline points="10 9 9 9 8 9"></polyline>
+         </svg>
+         
+              <span> Notes</span>
+            </li>
+            <li class="item" (click)='request()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-hash">
+                <line x1="4" y1="9" x2="20" y2="9" />
+                <line x1="4" y1="15" x2="20" y2="15" />
+                <line x1="10" y1="3" x2="8" y2="21" />
+                <line x1="16" y1="3" x2="14" y2="21" /></svg>
+              <span> Schedule Request</span>
+            </li>
+            <li class="item" (click)='schedule()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-calendar"
+              viewBox="0 0 24 24">
+           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+           <line x1="16" y1="2" x2="16" y2="6"/>
+           <line x1="8" y1="2" x2="8" y2="6"/>
+           <line x1="3" y1="10" x2="21" y2="10"/>
+         </svg>
+         
+              <span> Schedule</span>
+            </li>
+            <li class="item" (click)='writeoff()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-trash"
+                viewBox="0 0 24 24">
+                <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+              <span>Write off</span>
+            </li>
+            <li class="item" (click)='analytics()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-bar-chart"
+    viewBox="0 0 24 24">
+    <rect x="18" y="5" width="4" height="14"></rect>
+    <rect x="12" y="5" width="4" height="14"></rect>
+    <rect x="6" y="5" width="4" height="14"></rect>
+    <line x1="21" y1="9" x2="3" y2="9"></line>
+    <line x1="21" y1="14" x2="3" y2="14"></line>
+    <line x1="21" y1="19" x2="3" y2="19"></line>
+</svg>
+
+              <span>Analytics</span>
+            </li>
+            <li class="item" (click)='product()'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-shopping-cart" viewBox="0 0 24 24">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              
+              <span>Product Information</span>
+            </li>
+          </ul>
+         
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10  col-sm-12">
+      <!--start profile section-->
+      <div class="profileview" *ngIf="showProfile">
+        <div class="header">Profile</div>
+       
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Full Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="John Doe">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="john@example.com">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="(239) 816-9029">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Mobile</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="(320) 380-4539">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="button" class="btn btn-primary px-4" value="Save Changes">
+                    </div>
+                </div>
+            </div>
+     
+    </div>
+  </div>
+  <!--end section-->
+
+   <!--start tasks section-->
+   <div class="tasksview" *ngIf="tasksview">
+    <div class="header">Tasks</div>
+   
+    <div class="card taskstyle">
+        <table  class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Shift</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let task of newtasks | paginate: { itemsPerPage: 10, currentPage: p }; index as i">
+                <td>{{ i+1 }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{task.shift}}</td>
+                <td>{{ task.time }}</td>
+                <td>
+                    <div [ngClass]="{'status-pending': task.status === 'Pending', 'status-completed': task.status === 'Completed'}">
+                   {{task.status}}
+                   </div>
+                </td>
+                <td>
+                    <select [(ngModel)]="task.status" class="form-control" (change)="updateTaskStatus(task)">
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                </td>
+              </tr>
+           
+
+            </tbody>
+           
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+</div>
+<!--end tasks section-->
+
+ <!--start tasks section-->
+ <div class="notesview" *ngIf="notesview">
+  <div class="header">Notes 
+<span><button (click)='addnote()' class="btn btn-primary">Add Note</button></span>
+  </div>
+ 
+  <div class="card taskstyle">
+    <table  class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Created By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let note of newnotes | paginate: { itemsPerPage: 10, currentPage: p }; index as i">
+            <td>{{ i+1 }}</td>
+            <td>{{ note.title }}</td>
+            <td>{{note.description}}</td>
+            <td><img width="250px" *ngIf="note?.image" src="{{imageUrl}}{{note?.image }}"/></td>
+            <td>
+               {{note.firstname}}
+            </td>
+            
+          </tr>
+       
+
+        </tbody>
+       
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+</div>
+</div>
+<!--end tasks section-->
+
+<!--start tasks section-->
+<div class="schedulerequest" *ngIf="schedulerequest">
+  <div class="header">Schedule Request</div>
+ 
+  <div class="card">
+      <div class="card-body">
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="John Doe">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="john@example.com">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(239) 816-9029">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Mobile</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(320) 380-4539">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="button" class="btn btn-primary px-4" value="Save Changes">
+              </div>
+          </div>
+      </div>
+
+</div>
+</div>
+<!--end tasks section-->
+<!--start tasks section-->
+<div class="scheduleview" *ngIf="scheduleview">
+  <div class="header">Schedule</div>
+ 
+  <div class="card">
+      <div class="card-body">
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="John Doe">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="john@example.com">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(239) 816-9029">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Mobile</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(320) 380-4539">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="button" class="btn btn-primary px-4" value="Save Changes">
+              </div>
+          </div>
+      </div>
+
+</div>
+</div>
+<!--end tasks section-->
+<!--start tasks section-->
+<div class="writeoffview" *ngIf="writeoffview">
+  <div class="header">Write Off</div>
+ 
+  <div class="card">
+      <div class="card-body">
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="John Doe">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="john@example.com">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(239) 816-9029">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Mobile</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="(320) 380-4539">
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-9 text-secondary">
+                  <input type="button" class="btn btn-primary px-4" value="Save Changes">
+              </div>
+          </div>
+      </div>
+
+</div>
+</div>
+<!--end tasks section-->
+<!--start tasks section-->
+<div class="analyticsview" *ngIf="analyticsview">
+     <!--Food Analytics-->
+     <div class="header">Food Analytics</div>
+   
+     <div class="card">
+       <div class="card-body">
+         <input type="month" [(ngModel)]="selectedYear" (change)="showFoodChart()">
+        
+         <canvas #foodChartCanvas  class="myclass" width="100%"></canvas>
+     </div>
+     </div>
+     <!--end food analytics-->
+    <div class="header">Loto Sales / Loto Wins</div>
+   
+    <div class="card">
+      <div class="card-body">
+        <input type="date" [(ngModel)]="selectedDate" (change)="showLotoChart()">
+       
+        <canvas #salesChartCanvas  class="myclass" width="100%"></canvas>
+    </div>
+    </div>
+   
+  </div>
+  
+<!--end tasks section-->
+<!--start tasks section-->
+<div class="productview" *ngIf="productview">
+  <div class="header">Product Information</div>
+  
+
+  <div class="form-group">
+    <input type="text" placeholder="Search Product" class="form-control" (input)="searchProduct($event)" ><br>
+  </div>
+  <div class="card">
+      <div class="card-body">
+      
+        <table datatable [dtOptions]="dtOptions" id="myTable" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Product Image</th>
+              <th>Product Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of newproducts">
+              <td>{{ product.id }}</td>
+              <td>{{ product.productname }}</td>
+              <td><img src="https://7eleven.save2rent.com/images/products/{{product.image}}" width="50px" height="50px" ></td>
+              <td>{{ product.categoryname }}</td>
+              <td>
+                <div class="icons">
+                  <a (click)='viewProduct(product.id)'>
+                    <svg class="bi bi-eye" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 001.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0014.828 8a13.133 13.133 0 00-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 001.172 8z"/>
+                      <path fill-rule="evenodd" d="M8 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM4.5 8a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                  &nbsp;  &nbsp;
+                  <a (click)='editProduct(product.id)'>
+                    <svg class="bi bi-pencil-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15.502 1.94a.5.5 0 010 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 01.707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 00-.121.196l-.805 2.414a.25.25 0 00.316.316l2.414-.805a.5.5 0 00.196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5v-6a.5.5 0 00-1 0v6a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5H9a.5.5 0 000-1H2.5A1.5 1.5 0 001 2.5v11z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+       
+      </div>
+
+</div>
+</div>
+<!--end tasks section-->
+</div>    
+
+
+    </div>
+  
+
+
+</div>
+
+<app-footer></app-footer>
+<div class="row">
+    <div class="col-md-12">
+  <button class="menu__button">
+    <div>
+      <div></div>
+    </div>Quick Menu
+  </button>
+  <section class="menu__body" hidden="hidden">
+    <div class="menu__header">
+      <label class="fa-searchs"> 
+      
+      </label>
+      <input type="text" placeholder="What are you looking for ?" class="search-box">
+      <p>Quick Navigation</p>
+      <button title="Close">
+        <div></div>
+      </button>
+    </div>
+    <div class="menu__links">
+        <a (click)='tasks()'>Tasks</a>
+      <a (click)='notes()'>Notes</a>   
+      <a (click)='schedule()'>Schedule</a>
+      <a  (click)='writeoff()'>Write Off</a></div>
+    <div class="menu__contact">
+        <a href="/"><img src="assets/images/icons/home.png" class="menuicon"><span>Home</span></a>
+        <a  (click)='product()'><img src="assets/images/icons/cart.png" class="menuicon"><span>Products</span></a>
+        <a (click)='analytics()'><img src="assets/images/icons/heart.png" class="menuicon"><span>Analytics</span></a>
+        <a href="myaccount"><img src="assets/images/icons/user.png" class="menuicon"><span>My Account</span></a>
+    </div>
+  </section>
+  <div class="menu__overlay" hidden="hidden"></div>
+
+
+</div>
+</div>

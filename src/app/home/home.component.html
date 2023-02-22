@@ -1,0 +1,62 @@
+
+    <!--brand header-->
+    <app-header></app-header>
+
+   
+  
+  <!--brand header end-->
+   <div class="row" class="section-categories">
+       <div class="col-md-12">
+           <h3 class="title">All Categories</h3>
+       <!--COntent-->
+       <div class="content">
+            
+<ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+<div ngxSlickItem *ngFor="let slide of categories" class="slide">
+      <img src="https://7eleven.save2rent.com/images/{{slide.image}}">
+      <p>{{slide.name}}</p>
+</div>
+</ngx-slick-carousel>
+  
+       </div>
+
+
+
+
+   </div>
+  </div>
+  <section class="section-products">
+  
+   <div class="row" *ngFor="let category of saleproducts">
+        <div class="col-md-12">
+            <h3 class="title">{{ category.title }}</h3>
+        </div>
+            <!-- Single Product -->
+            <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let product of category.products">
+                <div id="product-{{product.id}}" class="single-product">
+                
+               
+                        <div class="part-1">
+                             <img src="https://7eleven.save2rent.com/images/products/{{product.image}}" class="animate-on-hover">
+                             <span class="discount">15% off</span>
+                                <ul>
+                                        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-plus"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-expand"></i></a></li>
+                                </ul>
+                        </div>
+                        <div class="part-2">
+                                <h3 class="product-title">{{product.name}}</h3>
+                            
+                                <h4 class="product-price">${{product.price}}</h4>
+                        </div>
+                </div>
+        </div>
+            <!-- Single Product -->
+    </div>
+  </section>
+  
+       <!--end COntent-->
+   
+       <app-footer></app-footer>

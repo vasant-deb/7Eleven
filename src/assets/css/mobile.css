@@ -1,0 +1,94 @@
+a.add-button {
+    background: none;
+    color: var(--main-color);
+}
+.app-header-right a {
+    margin-left: 10px;
+}
+.desktoponly{
+    display:block;
+}
+.mobileonly{
+display: none;
+}
+table thead tr:nth-child(1){
+background: #673ab7;
+    color: white !important;
+}
+.menu__links {
+    TEXT-ALIGN: CENTER;
+}
+@media only screen and (max-width: 600px) {
+    table tbody tr td:nth-child(2),
+    table tbody tr td:nth-child(3) ,
+    table tbody tr td:nth-child(4) ,
+    .tasksview table tbody tr td:nth-child(5),
+    tr th:nth-child(2),
+    tr th:nth-child(3),
+    tr th:nth-child(4),
+    .tasksview tr th:nth-child(5) {
+      display: block;
+      width: 100%;
+    }
+    table tbody tr td:nth-child(1),tr th:nth-child(1) {
+      display: none;
+    }
+    .modal-content label {
+        display: block !important;
+      }
+    .row.task-manager {
+        display: block !important;
+    }
+    .left-bar {
+        position: relative !important;
+        display: block !important;
+    }
+    .left-content {
+        display: none !important;
+    }
+    .brand {
+        width: 100%;
+        display: block !important;
+        text-align: center;
+        padding: 10px;
+    }
+    .mobileonly{
+        display: block;
+        }
+        .desktoponly{
+            display:none;
+        }
+        a.cart-btn.mobileonly,a.notification-btn.mobileonly  {
+            display: flex;
+            color: var(--main-color);
+            margin-left: 10px;
+        }
+       
+.app-header {
+    display: block;
+}
+.app-header-right {
+    margin: 10px auto;
+}
+.brand span {
+    font-size: 28px;
+    line-height: 10px;
+    padding: 10px 0px 0px 0px;
+}
+.app-header-right button, .app-header-right a {
+    margin: 0px 10px;
+    width: 100%;
+    height: auto;
+}
+svg.moon {
+    width: 24px;
+    height: 24px;
+}
+.app-header-right svg,.app-header-right i,.app-header-right img{
+width:24px;
+height:24px;
+}
+.app-header-right a {
+    margin-left: 0px;
+}
+}
