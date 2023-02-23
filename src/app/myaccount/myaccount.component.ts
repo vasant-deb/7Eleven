@@ -74,6 +74,10 @@ export class MyaccountComponent implements OnInit {
    
 
   ngOnInit(): void {
+    const email=localStorage.getItem('email');
+    if(!email){
+      this.router.navigate(['/login']);
+    }
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
