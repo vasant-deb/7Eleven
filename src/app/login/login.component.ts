@@ -27,12 +27,11 @@ export class LoginComponent {
           const email = res.email;
           localStorage.setItem('token', token);
           localStorage.setItem('email', email);
-          if(token==undefined){
+          if(token==undefined || token==""){
             localStorage.setItem('token', token);
             localStorage.setItem('email', email);
             console.log(res);
             this.error=true;
-            this.router.navigate(['/login']);
           }else{
           
                     console.log(res);
