@@ -16,18 +16,25 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
 
-
+  error=false;
   signup(value: { firstname: string,lastname: string, email: string, password: string }) {
     this.authService.signup(value)
       .subscribe(
         res => {
           const token = res.token;
           const email = res.email;
-          localStorage.setItem('token', token);
-          localStorage.setItem('email', email);
+          
+if(token==undefined){
+  localStorage.setItem('token', token);
+  localStorage.setItem('email', email);
+  console.log(res);
+  this.error=true;
+  this.router.navigate(['/login']);
+}else{
+
           console.log(res);
           this.router.navigate(['/myaccount']);
-
+        }
         },
         err => {
           console.log(err);
