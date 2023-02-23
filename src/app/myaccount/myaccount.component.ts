@@ -21,14 +21,7 @@ import { Chart, ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 export class MyaccountComponent implements OnInit {
   form: FormGroup;
   note: FormGroup;
-  //chart
-  @ViewChild('salesChartCanvas') salesChartCanvas?: ElementRef<HTMLCanvasElement>;
-  salesChart?: Chart;
-  @ViewChild('foodChartCanvas') foodChartCanvas?: ElementRef<HTMLCanvasElement>;
-  foodChart?: Chart;
-  selectedDate: string = '';  // initialize the property with an empty string
-  selectedYear :string = '';
-  // variable to store the selected date
+  
   //chart end  
   constructor(private snackBar: MatSnackBar,private http: HttpClient,private formBuilder: FormBuilder,private datatables: DataTablesModule,private spinner: NgxSpinnerService,private authService: AuthService, private router: Router, private slides: SlickCarouselModule) {
     this.form = this.formBuilder.group({
@@ -72,7 +65,21 @@ export class MyaccountComponent implements OnInit {
   addNote=false;
   imageFile: File | undefined = undefined;
    
-
+//chart
+@ViewChild('salesChartCanvas') salesChartCanvas?: ElementRef<HTMLCanvasElement>;
+salesChart?: Chart;
+@ViewChild('foodChartCanvas') foodChartCanvas?: ElementRef<HTMLCanvasElement>;
+foodChart?: Chart;
+@ViewChild('wedgesChartCanvas') wedgesChartCanvas?: ElementRef<HTMLCanvasElement>;
+wedgeChart?: Chart;
+@ViewChild('pizzaChartCanvas') pizzaChartCanvas?: ElementRef<HTMLCanvasElement>;
+pizzaChart?: Chart;
+@ViewChild('pieChartCanvas') pieChartCanvas?: ElementRef<HTMLCanvasElement>;
+pieChart?: Chart;
+selectedDate: string = '';  // initialize the property with an empty string
+selectedYear :string = '';
+selectedShift :string = '';
+// variable to store the selected date
   ngOnInit(): void {
     const email=localStorage.getItem('email');
     if(!email){
@@ -83,6 +90,175 @@ export class MyaccountComponent implements OnInit {
       pageLength: 10,
       searching: true, // enables search functionality
     };
+    
+    }
+    showPizzaChart() {    
+      const params = new HttpParams()
+      .append('year', this.selectedYear); 
+      this.http.get('https://checklistforme.online/7elevenapi/public/fooddatapizza',{params}).subscribe((res: any) => {
+        const data: any[] = res.data;
+        const months = data.map(record => record.month);
+        const pizza_slices_shift1 = data.map(record => record.pizza_slices_shift1);
+        const pizza_slices_shift2 = data.map(record => record.pizza_slices_shift2);
+        const pizza_slices_shift3 = data.map(record => record.pizza_slices_shift3);
+      
+        const chartData: ChartConfiguration<'line'>['data'] = {
+          labels: months,
+          datasets: [
+            {
+              label: 'Pizza Slices Shift 1',
+              data: pizza_slices_shift1,
+              backgroundColor: '#001f3f',
+              borderColor: '#001f3f',
+              borderWidth: 2, 
+            },
+            {
+              label: 'Pizza Slices Shift 2',
+              data: pizza_slices_shift2,
+              backgroundColor: '#4682B4',
+              borderColor: '#4682B4',
+              borderWidth: 2, 
+            },
+            {
+              label: 'Pizza Slices Shift 3',
+              data: pizza_slices_shift3,
+              backgroundColor: '#87CEEB',
+              borderColor: '#87CEEB',
+              borderWidth: 2, 
+            }
+          ]
+        };
+           
+      
+//options
+if (this.pizzaChart) {
+  // update chart data if the chart already exists
+  this.pizzaChart.data = chartData;
+  this.pizzaChart.update();
+} else {
+  // create a new chart if it doesn't exist
+  if (this.pizzaChartCanvas && this.pizzaChartCanvas.nativeElement) {
+    const canvas = this.pizzaChartCanvas.nativeElement as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    if (canvas && ctx) {
+      this.pizzaChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              stacked: false,
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count',
+              },
+            },
+            x: {
+              grid: {
+                display: true,
+              },
+              title: {
+                display: true,
+                text: 'Month',
+              },
+            },
+          },
+        }
+      });
+    }
+  }
+  
+}
+
+//options end
+});
+    }
+    showWedgesChart() {    
+      const params = new HttpParams()
+      .append('year', this.selectedYear); 
+      this.http.get('https://checklistforme.online/7elevenapi/public/fooddatawedges',{params}).subscribe((res: any) => {
+        const data: any[] = res.data;
+        const months = data.map(record => record.month);
+        const wedges_shift1 = data.map(record => record.wedges_shift1);
+        const wedges_shift2 = data.map(record => record.wedges_shift2);
+        const wedges_shift3 = data.map(record => record.wedges_shift3);
+      
+        const chartData: ChartConfiguration<'line'>['data'] = {
+          labels: months,
+          datasets: [
+            {
+              label: 'Wedges Shift 1',
+              data: wedges_shift1,
+              backgroundColor: '#001f3f',
+              borderColor: '#001f3f',
+              borderWidth: 2, 
+            },
+            {
+              label: 'Wedges Shift 2',
+              data: wedges_shift2,
+              backgroundColor: '#4682B4',
+              borderColor: '#4682B4',
+              borderWidth: 2, 
+            },
+            {
+              label: 'Wedges Shift 3',
+              data: wedges_shift3,
+              backgroundColor: '#87CEEB',
+              borderColor: '#87CEEB',
+              borderWidth: 2, 
+            }
+          ]
+        };
+           
+      
+//options
+if (this.wedgeChart) {
+  // update chart data if the chart already exists
+  this.wedgeChart.data = chartData;
+  this.wedgeChart.update();
+} else {
+  // create a new chart if it doesn't exist
+  if (this.wedgesChartCanvas && this.wedgesChartCanvas.nativeElement) {
+    const canvas = this.wedgesChartCanvas.nativeElement as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    if (canvas && ctx) {
+      this.wedgeChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              stacked: false,
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count',
+              },
+            },
+            x: {
+              grid: {
+                display: true,
+              },
+              title: {
+                display: true,
+                text: 'Month',
+              },
+            },
+          },
+        }
+      });
+    }
+  }
+  
+}
+
+//options end
+});
     }
     showFoodChart() {    
       const params = new HttpParams()
@@ -266,6 +442,59 @@ if (this.foodChart) {
         }
       });
     }
+    showPieChart() {    
+      const params = new HttpParams()
+        .append('year', this.selectedYear)
+        .append('shift', this.selectedShift); 
+    
+      this.http.get('https://checklistforme.online/7elevenapi/public/fooddata', { params }).subscribe((res: any) => {
+        const data: any[] = res.data;
+        const partitions :any[]= [];
+    
+        data.forEach(record => {
+          partitions.push({ label: 'Pizza Slices', value: record.pizza_slices_percentage });
+          partitions.push({ label: 'Wedges', value: record.wedges_percentage });
+          partitions.push({ label: 'Wings', value: record.wings_percentage });
+        });
+    
+        const chartData: ChartConfiguration<'pie'>['data'] = {
+          labels: partitions.map(partition => partition.label),
+          datasets: [
+            {
+              data: partitions.map(partition => partition.value),
+              backgroundColor: ['#001f3f', '#4682B4', '#87CEEB'],
+              borderColor: ['#001f3f', '#4682B4', '#87CEEB'],
+              borderWidth: 2, 
+            },
+          ],
+        };
+               
+        //options
+        if (this.pieChart) {
+          // update chart data if the chart already exists
+          this.pieChart.data = chartData;
+          this.pieChart.update();
+        } else {
+          // create a new chart if it doesn't exist
+          if (this.pieChartCanvas && this.pieChartCanvas.nativeElement) {
+            const canvas = this.pieChartCanvas.nativeElement as HTMLCanvasElement;
+            const ctx = canvas.getContext('2d');
+    
+            if (canvas && ctx) {
+              this.pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: chartData,
+                options: {
+                  responsive: true,
+                  
+                },
+              });
+            }
+          }
+        }
+        //options end
+      });
+    }
     
   analytics(){
   
@@ -280,6 +509,9 @@ if (this.foodChart) {
   this.analyticsview = true;
   this.showLotoChart();
   this.showFoodChart();
+  this.showWedgesChart();
+  this.showPizzaChart();
+  this.showPieChart();
   }
  
   profile(){

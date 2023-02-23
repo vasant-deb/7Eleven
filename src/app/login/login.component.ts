@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import * as $ from 'jquery';
 import { AuthService } from '../auth.service';
 
 @Component({
