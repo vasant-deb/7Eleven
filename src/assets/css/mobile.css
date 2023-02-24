@@ -19,6 +19,11 @@ background: #673ab7;
     TEXT-ALIGN: CENTER;
 }
 @media only screen and (max-width: 600px) {
+    .sign-in-container {
+        left: 0;
+        width: 100%;
+        z-index: 99999;
+    }
     .productview tr, td {
         width: 100%;
         display: block;
