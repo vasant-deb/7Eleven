@@ -20,9 +20,8 @@ background: #673ab7;
 }
 @media only screen and (max-width: 600px) {
     .sign-in-container {
-        left: 0;
-        width: 100%;
-        z-index: 99999;
+        width: 100% !important;
+        z-index: 99999 !important;
     }
     .productview tr, td {
         width: 100%;
